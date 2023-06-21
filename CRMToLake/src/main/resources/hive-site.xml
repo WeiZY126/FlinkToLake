@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?><!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<configuration>
+    <!-- Hive Config Start-->
+    <property>
+        <name>hive.execution.engine</name>
+        <value>tez</value>
+    </property>
+    <property>
+        <name>hive.exec.dynamic.partition</name>
+        <value>true</value>
+        <description>Whether or not to allow dynamic partitions in DML/DDL.</description>
+    </property>
+    <property>
+        <name>hive.exec.dynamic.partition.mode</name>
+        <value>nonstrict</value>
+        <description>
+            In strict mode, the user must specify at least one static partition
+            in case the user accidentally overwrites all partitions.
+            In nonstrict mode all partitions are allowed to be dynamic.
+        </description>
+    </property>
+    <property>
+        <name>hive.exec.parallel</name>
+        <value>false</value>
+        <description>Whether to execute jobs in parallel</description>
+    </property>
+    <property>
+        <name>hive.exec.max.dynamic.partitions.pernode</name>
+        <value>10000</value>
+        <description>Maximum number of dynamic partitions allowed to be created in each mapper/reducer node.
+        </description>
+    </property>
+    <property>
+        <name>hive.user.install.directory</name>
+        <value>hdfs://jf-iceberg//tmp/hive</value>
+    </property>
+    <property>
+        <name>hive.exec.scratchdir</name>
+        <value>hdfs://jf-iceberg//tmp/hive</value>
+    </property>
+    <property>
+        <name>hive.warehouse.subdir.inherit.perms</name>
+        <value>false</value>
+        <description>Set this to true if table directories should inherit the permissions of the warehouse or database
+            directory instead of being created with permissions derived from dfs umask.
+        </description>
+    </property>
+    <property>
+        <name>datanucleus.schema.autoCreateAll</name>
+        <value>false</value>
+        <description>Auto creates necessary schema on a startup if one doesn't exist. Set this to false, after creating
+            it once.To enable auto create also set hive.metastore.schema.verification=false. Auto creation is not
+            recommended for production use cases, run schematool command instead.
+        </description>
+    </property>
+    <!-- Hive Config End-->
+    <!-- Tez Config Start-->
+    <property>
+        <name>tez.ignore.lib.uris</name>
+        <value>false</value>
+    </property>
+    <property>
+        <name>tez.lib.uris</name>
+        <value>/user/tez/tez-0.9.2.tar.gz</value>
+    </property>
+    <property>
+        <name>tez.use.cluster.hadoop-libs</name>
+        <value>true</value>
+    </property>
+    <!-- Tez Config End-->
+    <!-- HiveServer2 Config Start-->
+    <property>
+        <name>hive.server2.map.fair.scheduler.queue</name>
+        <value>false</value>
+        <description>
+            If the YARN fair scheduler is configured and HiveServer2 is running in non-impersonation mode,
+            this setting determines the user for fair scheduler queue mapping.
+            If set to true (default), the logged-in user determines the fair scheduler queue
+            for submitted jobs, so that map reduce resource usage can be tracked by user.
+            If set to false, all Hive jobs go to the 'hive' user's queue.
+        </description>
+    </property>
+    <property>
+        <name>hive.server2.thrift.max.worker.threads</name>
+        <value>1000</value>
+        <description>Maximum number of Thrift worker threads</description>
+    </property>
+    <property>
+        <name>hive.server2.session.check.interval</name>
+        <value>3h</value>
+        <description>
+            Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if
+            not specified.
+            The time should be bigger than or equal to 3000 msec.
+            The check interval for session/operation timeout, which can be disabled by setting to zero or negative
+            value.
+        </description>
+    </property>
+    <property>
+        <name>hive.server2.idle.session.timeout</name>
+        <value>12h</value>
+        <description>
+            Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if
+            not specified.
+            Session will be closed when it's not accessed for this duration, which can be disabled by setting to zero or
+            negative value.
+        </description>
+    </property>
+    <property>
+        <name>hive.server2.logging.operation.enabled</name>
+        <value>true</value>
+        <description>When true, HS2 will save operation logs and make them available for clients</description>
+    </property>
+    <property>
+        <name>hive.server2.logging.operation.log.location</name>
+        <value>/tdpzj/TDP/tdp-data/hive/logs/operation_log</value>
+        <description>Top level directory where operation logs are stored if logging functionality is enabled
+        </description>
+    </property>
+    <property>
+        <name>hive.server2.logging.operation.level</name>
+        <value>VERBOSE</value>
+        <description>
+            Expects one of [none, execution, performance, verbose].
+            HS2 operation logging mode available to clients to be set at session level.
+            For this to work, hive.server2.logging.operation.enabled should be set to true.
+            NONE: Ignore any logging
+            EXECUTION: Log completion of tasks
+            PERFORMANCE: Execution + Performance logs
+            VERBOSE: All logs
+        </description>
+    </property>
+    <property>
+        <name>hive.server2.metrics.enabled</name>
+        <value>true</value>
+    </property>
+    <!-- HiveServer2 Config End-->
+    <!-- Hive Metastore Config -->
+    <property>
+        <name>hive.metastore.uris</name>
+        <value>thrift://jfdkhadoop003:15000,thrift://jfdkhadoop004:15000,thrift://jfdkhadoop005:15000,thrift://jfdkhadoop006:15000,thrift://jfdkhadoop007:15000,</value>
+        <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.
+        </description>
+    </property>
+    <property>
+        <name>javax.jdo.option.ConnectionDriverName</name>
+        <value>com.mysql.jdbc.Driver</value>
+    </property>
+    <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>hdfs://jf-iceberg//hive/warehouse</value>
+    </property>
+    <property>
+        <name>hive.metastore.port</name>
+        <value>15000</value>
+    </property>
+    <property>
+      <name>hive.server2.thrift.port</name>
+      <value>15001</value>
+    </property>
+    <!-- Compress Start-->
+    <property>
+        <name>hive.exec.compress.intermediate</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hive.exec.compress.output</name>
+        <value>true</value>
+    </property>
+    <!-- Compress End-->
+    <property>
+        <name>hive.vectorized.execution.enabled</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hive.metastore.server.max.threads</name>
+        <value>10000</value>
+        <description>Maximum number of worker threads in the Thrift server's pool.</description>
+    </property>
+    <property>
+        <name>hive.metastore.schema.verification</name>
+        <value>false</value>
+        <description>
+            Enforce metastore schema version consistency.
+            True: Verify that version information stored in is compatible with one from Hive jars. Also disable
+            automatic
+            schema migration attempt. Users are required to manually migrate schema after Hive upgrade which ensures
+            proper metastore schema migration. (Default)
+            False: Warn if the version information stored in metastore doesn't match with one from in Hive jars.
+        </description>
+    </property>
+    <property>
+        <name>hive.metastore.schema.verification.record.version</name>
+        <value>false</value>
+        <description>
+            When true the current MS version is recorded in the VERSION table. If this is disabled and verification is
+            enabled the MS will be unusable.
+        </description>
+    </property>
+    <property>
+        <name>hive.metastore.metrics.enabled</name>
+        <value>true</value>
+    </property>
+    <!-- Hive Security Config Start-->
+    <property>
+        <name>hive.server2.authentication</name>
+        <value>KERBEROS</value>
+    </property>
+    <property>
+        <name>hive.server2.authentication.kerberos.principal</name>
+        <value>tdpzj/_HOST@HADOOP.CHINATELECOM.CN</value>
+    </property>
+    <property>
+        <name>hive.server2.authentication.kerberos.keytab</name>
+        <value>/tdpzj/TDP/keytab/tdpzj.keytab</value>
+    </property>
+    <property>
+        <name>hive.metastore.kerberos.principal</name>
+        <value>tdpzj/_HOST@HADOOP.CHINATELECOM.CN</value>
+    </property>
+    <property>
+        <name>hive.metastore.sasl.enabled</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hive.metastore.kerberos.keytab.file</name>
+        <value>/tdpzj/TDP/keytab/tdpzj.keytab</value>
+    </property>
+    <!-- Hive Security Config End-->
+    <!--  HiveServer2 ZK Start  -->
+    <property>
+        <name>hive.server2.support.dynamic.service.discovery</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hive.server2.zookeeper.namespace</name>
+        <value>hiveserver2_zk</value>
+    </property>
+    <property>
+        <name>hive.zookeeper.quorum</name>
+        <value>jfdkhadoop008:11001,jfdkhadoop009:11001,jfdkhadoop010:11001</value>
+    </property>
+    <property>
+        <name>hive.zookeeper.client.port</name>
+        <value>11001</value>
+    </property>
+    <!--  HiveServer2 ZK End  -->
+    <!-- Hive Optimize Start-->
+    <property>
+        <name>hive.auto.convert.join</name>
+        <value>true</value>
+        <description>Whether Hive enables the optimization about converting common join into mapjoin based on the input
+            file size.
+        </description>
+    </property>
+    <property>
+        <name>hive.auto.convert.join.noconditionaltask</name>
+        <value>true</value>
+        <description>
+            Whether Hive enables the optimization about converting common join into mapjoin based on the input file
+            size.
+            If this parameter is on, and the sum of size for n-1 of the tables/partitions for a n-way join is smaller
+            than the
+            specified size, the join is directly converted to a mapjoin (there is no conditional task).
+        </description>
+    </property>
+    <property>
+        <name>hive.auto.convert.join.noconditionaltask.size</name>
+        <value>400000000</value>
+        <description>
+            If hive.auto.convert.join.noconditionaltask is off, this parameter does not take affect.
+            However, if it is on, and the sum of size for n-1 of the tables/partitions for a n-way join is smaller than
+            this size,
+            the join is directly converted to a mapjoin(there is no conditional task). The default is 10MB
+            (Xmx - io.sort.mb)/3.0 = 0.1container_size
+        </description>
+    </property>
+    <property>
+        <name>hive.join.emit.interval</name>
+        <value>10000</value>
+        <description>How many rows in the right-most join operand Hive should buffer before emitting the join result.
+        </description>
+    </property>
+    <property>
+        <name>hive.cbo.enable</name>
+        <value>true</value>
+        <description>Flag to control enabling Cost Based Optimizations using Calcite framework.</description>
+    </property>
+    <property>
+        <name>hive.limit.pushdown.memory.usage</name>
+        <value>0.1</value>
+        <description>
+            Expects value between 0.0f and 1.0f.
+            The fraction of available memory to be used for buffering rows in Reducesink operator for limit pushdown
+            optimization.
+        </description>
+    </property>
+    <property>
+        <name>hive.exec.input.listing.max.threads</name>
+        <value>20</value>
+        <description>
+            Expects a byte size value with unit (blank for bytes, kb, mb, gb, tb, pb).
+            The size should be in between 0Pb (inclusive) and 1Kb (inclusive).
+            Maximum number of threads that Hive uses to list file information from file systems (recommended &gt; 1 for
+            blobstore).
+        </description>
+    </property>
+    <!-- Hive Optimize End-->
+    <!-- Tez Optimize Start-->
+    <property>
+        <name>hive.tez.container.size</name>
+        <value>4096</value>
+    </property>
+    <property>
+        <name>hive.tez.java.opts</name>
+        <value>-Xmx3276m -Dfile.encoding=UTF-8</value>
+    </property>
+    <property>
+        <name>hive.merge.tezfiles</name>
+        <value>false</value>
+        <description>Merge small files at the end of a Tez DAG</description>
+    </property>
+    <property>
+        <name>hive.tez.auto.reducer.parallelism</name>
+        <value>true</value>
+        <description>
+            Turn on Tez' auto reducer parallelism feature. When enabled, Hive will still estimate data sizes
+            and set parallelism estimates. Tez will sample source vertices' output sizes and adjust the estimates at
+            runtime as
+            necessary.
+        </description>
+    </property>
+    <property>
+        <name>hive.vectorized.execution.enabled</name>
+        <value>false</value>
+        <description>
+            This flag should be set to true to enable vectorized mode of query execution.
+            The default value is false.
+        </description>
+    </property>
+    <property>
+        <name>tez.am.resource.cpu.vcores</name>
+        <value>4</value>
+    </property>
+    <property>
+        <name>tez.am.resource.memory.mb</name>
+        <value>4096</value>
+    </property>
+    <property>
+        <name>tez.container.max.java.heap.fraction</name>
+        <value>0.8</value>
+    </property>
+    <property>
+        <name>tez.counters.max</name>
+        <value>1600</value>
+    </property>
+    <property>
+        <name>tez.runtime.io.sort.mb</name>
+        <value>1600</value>
+    </property>
+    <property>
+        <name>tez.runtime.unordered.output.buffer.size-mb</name>
+        <value>400</value>
+    </property>
+    <property>
+        <name>tez.runtime.unordered.output.max-per-buffer.size-bytes</name>
+        <value>268435456</value>
+    </property>
+    <property>
+        <name>tez.runtime.shuffle.ssl.enable</name>
+        <value>false</value>
+    </property>
+    <property>
+        <name>tez.session.am.dag.submit.timeout.secs</name>
+        <value>300</value>
+    </property>
+    <property>
+        <name>tez.grouping.min-size</name>
+        <value>16777216</value>
+        <description>16 MB min split</description>
+    </property>
+    <property>
+        <name>tez.grouping.max-size</name>
+        <value>1073741824</value>
+        <description>1 GB max split</description>
+    </property>
+    <!-- Tez Optimize End-->
+</configuration>
