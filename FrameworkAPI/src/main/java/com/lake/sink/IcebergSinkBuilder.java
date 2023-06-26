@@ -11,7 +11,7 @@ import org.apache.iceberg.DistributionMode;
 import org.apache.iceberg.catalog.TableIdentifier;
 import org.apache.iceberg.flink.CatalogLoader;
 import org.apache.iceberg.flink.TableLoader;
-import org.apache.iceberg.flink.sink.FlinkSink;
+import org.apache.iceberg.flink.sink.FlinkSinkWithSlotGroup;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class IcebergSinkBuilder {
             TableIdentifier tableIdentifier = TableIdentifier.of(parameterTool.get("iceberg.namespace.name"), sinkTableName);
             TableLoader tableLoader = TableLoader.fromCatalog(catalogLoader, tableIdentifier);
 
-            FlinkSink.Builder builder = FlinkSink
+            FlinkSinkWithSlotGroup.Builder builder = FlinkSinkWithSlotGroup
                     .forRowData(sideOutput)
                     .upsert(true)
                     .distributionMode(DistributionMode.HASH)

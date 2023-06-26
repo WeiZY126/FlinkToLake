@@ -73,15 +73,15 @@ import static org.apache.iceberg.TableProperties.PARQUET_COMPRESSION;
 import static org.apache.iceberg.TableProperties.PARQUET_COMPRESSION_LEVEL;
 import static org.apache.iceberg.TableProperties.WRITE_DISTRIBUTION_MODE;
 
-public class FlinkSink {
-    private static final Logger LOG = LoggerFactory.getLogger(FlinkSink.class);
+public class FlinkSinkWithSlotGroup {
+    private static final Logger LOG = LoggerFactory.getLogger(FlinkSinkWithSlotGroup.class);
 
     private static final String ICEBERG_STREAM_WRITER_NAME =
             IcebergStreamWriter.class.getSimpleName();
     private static final String ICEBERG_FILES_COMMITTER_NAME =
             IcebergFilesCommitter.class.getSimpleName();
 
-    private FlinkSink() {
+    private FlinkSinkWithSlotGroup() {
     }
 
     /**
@@ -200,7 +200,7 @@ public class FlinkSink {
             return this;
         }
 
-        public Builder slotSharingGroup(String slotGroup) {
+        public Builder slotSharingGroup(String slotSharingGroup) {
             this.slotSharingGroup = slotSharingGroup;
             return this;
         }

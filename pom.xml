@@ -20,7 +20,7 @@
         <scala.version>2.12.8</scala.version>
         <scala.binary.version>2.12</scala.binary.version>
         <hadoop.version>3.3.2</hadoop.version>
-        <flink.version>1.14.5</flink.version>
+        <flink.version>1.14.0</flink.version>
         <iceberg.version>1.1.0</iceberg.version>
         <kafka.version>2.6.0</kafka.version>
         <hive.version>3.1.2</hive.version>
@@ -50,7 +50,13 @@
 
 
     <dependencies>
-
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.62</version>
+            <scope>provided</scope>
+        </dependency>
         <!--hadoop-->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
@@ -86,13 +92,68 @@
             <groupId>org.apache.iceberg</groupId>
             <artifactId>iceberg-flink-runtime-1.14</artifactId>
             <version>${iceberg.version}</version>
+<!--            <scope>compile</scope>-->
             <scope>${maven.dependency.scope}</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.iceberg</groupId>
             <artifactId>iceberg-hive-metastore</artifactId>
             <version>${iceberg.version}</version>
+<!--            <scope>compile</scope>-->
             <scope>${maven.dependency.scope}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-exec</artifactId>
+            <version>${hive.version}</version>
+            <scope>${maven.dependency.scope}</scope>
+<!--            <scope>compile</scope>-->
+            <exclusions>
+                <exclusion>
+                    <artifactId>hadoop-annotations</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hadoop-auth</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hadoop-common</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hadoop-hdfs</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hadoop-yarn-api</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hadoop-yarn-common</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hadoop-yarn-registry</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hadoop-yarn-server-applicationhistoryservice</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hadoop-yarn-server-common</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hadoop-yarn-server-resourcemanager</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hadoop-yarn-server-web-proxy</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--flink-->
@@ -124,6 +185,7 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
+<!--            <scope>compile</scope>-->
             <scope>${maven.dependency.scope}</scope>
         </dependency>
         <dependency>

@@ -31,7 +31,7 @@ public class KafkaToIcebergMain {
                 .mergeWith(ParameterTool.fromSystemProperties())
                 .mergeWith(ParameterTool.fromMap(getenv()));
 
-        StreamExecutionEnvironment env = FlinkEnvUtil.creatEnv5();
+        StreamExecutionEnvironment env = FlinkEnvUtil.creatEnv5(parameterTool.get("hdfs.checkpoint.path"));
 
         //配置文件放入流式环境
         env.getConfig().setGlobalJobParameters(parameterTool);

@@ -5,6 +5,7 @@ import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.table.data.RowData;
 import org.apache.flink.util.OutputTag;
 
+import com.lake.Exceptions.TableMappingRelationshipNotFoundException;
 import com.lake.bean.TableMapperBean;
 import org.apache.iceberg.flink.CatalogLoader;
 
@@ -32,6 +33,14 @@ public abstract class BaseSideOutPutProcess<T> extends ProcessFunction<T, RowDat
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
         generateOutputTagAndDeserialization();
+    }
+
+    protected String getSinkTableName(String sourceTableName) throws Exception {
+        String sinkTableName = tableIdentMap.get(sourceTableName);
+        if (sinkTableName == null || sinkTableName.isEmpty()) {
+            throw new TableMappingRelationshipNotFoundException("未找到表映射关系");
+        }
+        return sinkTableName;
     }
 
     protected abstract void generateOutputTagAndDeserialization();

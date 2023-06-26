@@ -7,6 +7,7 @@ import org.apache.flink.table.runtime.typeutils.InternalTypeInfo;
 import org.apache.flink.table.types.logical.RowType;
 import org.apache.flink.util.OutputTag;
 
+import com.lake.Exceptions.TableMappingRelationshipNotFoundException;
 import com.lake.bean.TableMapperBean;
 import org.apache.iceberg.Table;
 import org.apache.iceberg.catalog.TableIdentifier;
@@ -31,9 +32,11 @@ public abstract class JsonSideOutPutProcess<T> extends BaseSideOutPutProcess<T> 
     }
 
     protected RowData getRowDataFromJson(String jsonString, String sinkTableName) throws Exception {
-        RowData rowData;
         JsonRowDataDeserializationSchema jrd = jsonRowDataDeserializationSchemaMap.get(sinkTableName);
-        rowData = jrd.deserialize(jsonString.getBytes(StandardCharsets.UTF_8));
+        if (jrd == null) {
+            throw new TableMappingRelationshipNotFoundException("未找到表" + sinkTableName + "映射关系，请检查是否存在");
+        }
+        RowData rowData = jrd.deserialize(jsonString.getBytes(StandardCharsets.UTF_8));
         return rowData;
     }
 

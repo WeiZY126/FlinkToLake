@@ -13,11 +13,11 @@ import org.apache.iceberg.flink.CatalogLoader;
 
 import java.util.List;
 
-public class jsonParserProcess extends JsonSideOutPutProcess<String> {
-    public jsonParserProcess() {
+public class jsonParserProcess_m extends JsonSideOutPutProcess<String> {
+    public jsonParserProcess_m() {
     }
 
-    public jsonParserProcess(List<TableMapperBean> tableMapperBeanList, String namespace, CatalogLoader catalogLoader) {
+    public jsonParserProcess_m(List<TableMapperBean> tableMapperBeanList, String namespace, CatalogLoader catalogLoader) {
         super(tableMapperBeanList, namespace, catalogLoader);
     }
 
@@ -25,10 +25,8 @@ public class jsonParserProcess extends JsonSideOutPutProcess<String> {
     public void processElement(String input, Context context, Collector<RowData> collector) throws Exception {
         if (input != null) {
             JSONObject jsonObject = JSON.parseObject(input);
-            String key = jsonObject.keySet().iterator().next();
-            jsonObject = jsonObject.getJSONObject(key);
-            String op = jsonObject.getString("op_type");
-            String sourceTableName = jsonObject.getString("table");
+            String op = jsonObject.getString("datatype");
+            String sourceTableName = jsonObject.getString("itfcode").toLowerCase();
             //获取目标端表名
             String sinkTableName;
             try {
@@ -39,20 +37,19 @@ public class jsonParserProcess extends JsonSideOutPutProcess<String> {
             }
 
             if (op.equals("I")) {
-                RowData rowData = getRowDataFromJson(jsonObject.getString("after"), sinkTableName);
+                RowData rowData = getRowDataFromJson(jsonObject.getString("dataload"), sinkTableName);
                 rowData.setRowKind(RowKind.INSERT);
                 context.output(outputTagMap.get(sinkTableName), rowData);
             } else if (op.equals("U")) {
-//                RowData rowData1 = getRowDataFromJson(jsonObject.getString("before"), sinkTableName);
-//                rowData1.setRowKind(RowKind.UPDATE_BEFORE);
-                RowData rowData2 = getRowDataFromJson(jsonObject.getString("after"), sinkTableName);
+                RowData rowData1 = getRowDataFromJson(jsonObject.getString("BEFORE"), sinkTableName);
+                rowData1.setRowKind(RowKind.UPDATE_BEFORE);
+                RowData rowData2 = getRowDataFromJson(jsonObject.getString("dataload"), sinkTableName);
                 rowData2.setRowKind(RowKind.UPDATE_AFTER);
-//                context.output(outputTagMap.get(sinkTableName), rowData1);
+                context.output(outputTagMap.get(sinkTableName), rowData1);
                 context.output(outputTagMap.get(sinkTableName), rowData2);
             } else if (op.equals("D")) {
-                RowData rowData = getRowDataFromJson(jsonObject.getString("before"), sinkTableName);
+                RowData rowData = getRowDataFromJson(jsonObject.getString("BEFORE"), sinkTableName);
                 rowData.setRowKind(RowKind.DELETE);
-                System.out.println(rowData);
                 context.output(outputTagMap.get(sinkTableName), rowData);
             }
         }
