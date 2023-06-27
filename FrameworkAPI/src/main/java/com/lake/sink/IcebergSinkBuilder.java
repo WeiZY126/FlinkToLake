@@ -33,12 +33,15 @@ public class IcebergSinkBuilder {
     }
 
     public void build(CatalogLoader catalogLoader) throws Exception {
+        //拼接侧输出流与icebergSink
         tableMapperBeanList.forEach(tableMapperBean -> {
             String sinkTableName = tableMapperBean.getSinkTableName();
 
+            //获取侧输出流
             DataStream sideOutput = inputStream.getSideOutput(new OutputTag<RowData>(sinkTableName) {
             });
 
+            //获取tableLoader
             TableIdentifier tableIdentifier = TableIdentifier.of(parameterTool.get("iceberg.namespace.name"), sinkTableName);
             TableLoader tableLoader = TableLoader.fromCatalog(catalogLoader, tableIdentifier);
 

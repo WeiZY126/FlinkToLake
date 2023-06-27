@@ -35,6 +35,12 @@ public abstract class BaseSideOutPutProcess<T> extends ProcessFunction<T, RowDat
         generateOutputTagAndDeserialization();
     }
 
+    /**
+     * 通过sourceTableName获取sinkTableName
+     * @param sourceTableName
+     * @return
+     * @throws Exception
+     */
     protected String getSinkTableName(String sourceTableName) throws Exception {
         String sinkTableName = tableIdentMap.get(sourceTableName);
         if (sinkTableName == null || sinkTableName.isEmpty()) {

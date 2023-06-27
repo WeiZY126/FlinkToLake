@@ -8,6 +8,9 @@ import org.apache.iceberg.flink.CatalogLoader;
 
 import java.util.List;
 
+/**
+ * 构建BaseSideOutPutProcess流
+ */
 public class SideOutPutBuilder {
     private ParameterTool parameterTool;
     private List<TableMapperBean> tableMapperBeanList;

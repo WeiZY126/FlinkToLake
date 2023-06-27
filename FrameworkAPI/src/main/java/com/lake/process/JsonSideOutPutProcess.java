@@ -31,6 +31,13 @@ public abstract class JsonSideOutPutProcess<T> extends BaseSideOutPutProcess<T> 
         super(tableMapperBeanList, namespace, catalogLoader);
     }
 
+    /**
+     * 通过json串和sinkTableName，获取对应的RowData
+     * @param jsonString
+     * @param sinkTableName
+     * @return
+     * @throws Exception
+     */
     protected RowData getRowDataFromJson(String jsonString, String sinkTableName) throws Exception {
         JsonRowDataDeserializationSchema jrd = jsonRowDataDeserializationSchemaMap.get(sinkTableName);
         if (jrd == null) {
@@ -40,6 +47,9 @@ public abstract class JsonSideOutPutProcess<T> extends BaseSideOutPutProcess<T> 
         return rowData;
     }
 
+    /**
+     * 初始化方法
+     */
     @Override
     protected void generateOutputTagAndDeserialization() {
         outputTagMap = new HashMap<>();
@@ -47,10 +57,12 @@ public abstract class JsonSideOutPutProcess<T> extends BaseSideOutPutProcess<T> 
         tableIdentMap = new HashMap<>();
         tableMapperBeanList.forEach(tableMapperBean -> {
             String sinkTableName = tableMapperBean.getSinkTableName();
+
+            //初始化侧输出流与sinkTableName映射关系
             outputTagMap.put(sinkTableName, new OutputTag<RowData>(tableMapperBean.getSinkTableName()) {
             });
 
-            // json-RowData 序列化
+            //初始化序列化器与sinkTableName映射关系
             TableIdentifier tableIdentifier = TableIdentifier.of(namespace, sinkTableName);
             Table table = catalogLoader.loadCatalog().loadTable(tableIdentifier);
 
@@ -60,6 +72,7 @@ public abstract class JsonSideOutPutProcess<T> extends BaseSideOutPutProcess<T> 
                             false, false, TimestampFormat.SQL);
             jsonRowDataDeserializationSchemaMap.put(sinkTableName, jsonRowDataDeserializationSchema);
 
+            //初始化sourceTableName与sinkTableName映射关系
             tableIdentMap.put(tableMapperBean.getSourceTableName(), sinkTableName);
         });
     }
