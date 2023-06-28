@@ -92,66 +92,26 @@
             <groupId>org.apache.iceberg</groupId>
             <artifactId>iceberg-flink-runtime-1.14</artifactId>
             <version>${iceberg.version}</version>
-<!--            <scope>compile</scope>-->
-            <scope>${maven.dependency.scope}</scope>
+            <scope>compile</scope>
+<!--            <scope>${maven.dependency.scope}</scope>-->
         </dependency>
         <dependency>
             <groupId>org.apache.iceberg</groupId>
             <artifactId>iceberg-hive-metastore</artifactId>
             <version>${iceberg.version}</version>
-<!--            <scope>compile</scope>-->
-            <scope>${maven.dependency.scope}</scope>
+            <scope>compile</scope>
+<!--            <scope>${maven.dependency.scope}</scope>-->
         </dependency>
         <dependency>
             <groupId>org.apache.hive</groupId>
             <artifactId>hive-exec</artifactId>
             <version>${hive.version}</version>
-            <scope>${maven.dependency.scope}</scope>
-<!--            <scope>compile</scope>-->
+            <scope>compile</scope>
+<!--            <scope>${maven.dependency.scope}</scope>-->
             <exclusions>
                 <exclusion>
-                    <artifactId>hadoop-annotations</artifactId>
                     <groupId>org.apache.hadoop</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>hadoop-auth</artifactId>
-                    <groupId>org.apache.hadoop</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>hadoop-common</artifactId>
-                    <groupId>org.apache.hadoop</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>hadoop-hdfs</artifactId>
-                    <groupId>org.apache.hadoop</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>hadoop-yarn-api</artifactId>
-                    <groupId>org.apache.hadoop</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>hadoop-yarn-common</artifactId>
-                    <groupId>org.apache.hadoop</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>hadoop-yarn-registry</artifactId>
-                    <groupId>org.apache.hadoop</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>hadoop-yarn-server-applicationhistoryservice</artifactId>
-                    <groupId>org.apache.hadoop</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>hadoop-yarn-server-common</artifactId>
-                    <groupId>org.apache.hadoop</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>hadoop-yarn-server-resourcemanager</artifactId>
-                    <groupId>org.apache.hadoop</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>hadoop-yarn-server-web-proxy</artifactId>
-                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -185,8 +145,8 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
-<!--            <scope>compile</scope>-->
-            <scope>${maven.dependency.scope}</scope>
+            <scope>compile</scope>
+<!--            <scope>${maven.dependency.scope}</scope>-->
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>

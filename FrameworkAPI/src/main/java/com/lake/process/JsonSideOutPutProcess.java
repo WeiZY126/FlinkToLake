@@ -70,7 +70,7 @@ public abstract class JsonSideOutPutProcess<T> extends BaseSideOutPutProcess<T> 
             RowType rowType = FlinkSchemaUtil.convert(table.schema());
             JsonRowDataDeserializationSchema jsonRowDataDeserializationSchema =
                     new JsonRowDataDeserializationSchema(rowType, InternalTypeInfo.of(rowType),
-                            true, false, TimestampFormat.SQL);
+                            false, false, TimestampFormat.SQL);
             jsonRowDataDeserializationSchemaMap.put(sinkTableName, jsonRowDataDeserializationSchema);
 
             //初始化sourceTableName与sinkTableName映射关系

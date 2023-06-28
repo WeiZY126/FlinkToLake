@@ -37,7 +37,7 @@ public class jsonParserProcess_m extends JsonSideOutPutProcess<String> {
             }
 
             if (op.equals("I")) {
-                RowData rowData = getRowDataFromJson(jsonObject.getString("dataload"), sinkTableName);
+                RowData rowData = getRowDataFromJson(jsonObject.getString("dataload").replaceAll(":null,",""), sinkTableName);
                 rowData.setRowKind(RowKind.INSERT);
                 context.output(outputTagMap.get(sinkTableName), rowData);
             } else if (op.equals("U")) {

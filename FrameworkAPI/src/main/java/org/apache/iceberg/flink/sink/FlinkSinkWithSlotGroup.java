@@ -20,6 +20,7 @@
 package org.apache.iceberg.flink.sink;
 
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.operators.SlotSharingGroup;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.configuration.Configuration;
@@ -146,7 +147,7 @@ public class FlinkSinkWithSlotGroup {
         private ReadableConfig readableConfig = new Configuration();
         private final Map<String, String> writeOptions = Maps.newHashMap();
         private FlinkWriteConf flinkWriteConf = null;
-        private String slotSharingGroup = null;
+        private SlotSharingGroup slotSharingGroup = null;
 
         private Builder() {
         }
@@ -197,11 +198,6 @@ public class FlinkSinkWithSlotGroup {
          */
         public Builder tableLoader(TableLoader newTableLoader) {
             this.tableLoader = newTableLoader;
-            return this;
-        }
-
-        public Builder slotSharingGroup(String slotSharingGroup) {
-            this.slotSharingGroup = slotSharingGroup;
             return this;
         }
 
@@ -330,6 +326,17 @@ public class FlinkSinkWithSlotGroup {
             return this;
         }
 
+        /**
+         * Configuring the slotSharingGroup for iceberg stream writer
+         *
+         * @param slotSharingGroup the slotSharingGroup for iceberg stream writer
+         * @return {@link Builder} to connect the iceberg table.
+         */
+        public Builder slotSharingGroup(SlotSharingGroup slotSharingGroup) {
+            this.slotSharingGroup = slotSharingGroup;
+            return this;
+        }
+
         private <T> DataStreamSink<T> chainIcebergOperators() {
             Preconditions.checkArgument(
                     inputCreator != null,
@@ -370,10 +377,6 @@ public class FlinkSinkWithSlotGroup {
             // after successful checkpoint or end of input
             SingleOutputStreamOperator<Void> committerStream = appendCommitter(writerStream);
 
-            if (slotSharingGroup != null) {
-                writerStream.slotSharingGroup(slotSharingGroup);
-                committerStream.slotSharingGroup(slotSharingGroup);
-            }
             // Add dummy discard org.apache.iceberg.flink.sink
             return appendDummySink(committerStream);
         }
@@ -486,6 +489,9 @@ public class FlinkSinkWithSlotGroup {
                             .setParallelism(parallelism);
             if (uidPrefix != null) {
                 writerStream = writerStream.uid(uidPrefix + "-writer");
+            }
+            if (slotSharingGroup != null) {
+                writerStream.slotSharingGroup(slotSharingGroup);
             }
             return writerStream;
         }

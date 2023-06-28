@@ -1,5 +1,6 @@
 package com.lake.sink;
 
+import org.apache.flink.api.common.operators.SlotSharingGroup;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
@@ -52,7 +53,7 @@ public class IcebergSinkBuilder {
                     .tableLoader(tableLoader)
                     .writeParallelism(1);
             if (tableMapperBean.getSlotSharingGroupName() != null) {
-                builder.slotSharingGroup(tableMapperBean.getSlotSharingGroupName());
+                builder.slotSharingGroup(SlotSharingGroup.newBuilder(tableMapperBean.getSlotSharingGroupName()).build());
             }
             builder.append();
         });
