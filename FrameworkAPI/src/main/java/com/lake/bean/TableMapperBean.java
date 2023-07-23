@@ -49,6 +49,15 @@ public class TableMapperBean implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "TableMapperBean{" +
+                "sourceTableName='" + sourceTableName + '\'' +
+                ", sinkTableName='" + sinkTableName + '\'' +
+                ", slotSharingGroupName='" + slotSharingGroupName + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

@@ -1,9 +1,3 @@
-assets_card zcgl_assets_card_test2 test1
-ct_payment_status zcgl_ct_payment_status test1
-ua_monthly_interest zcgl_ua_monthly_interest test1
-ua_performance_plan zcgl_ua_performance_plan test1
-ua_contract_parse zcgl_ua_contract_parse test1
-ua_lease_liability zcgl_ua_lease_liability test1
-lh_house zcgl_lh_house test1
-ct_contract zcgl_ct_contract test1
-ua_initial_balance_change zcgl_ua_initial_balance_change test1
+assets_card zcgl_assets_card_test
+assets_card zcgl_assets_card
+writeoff_instance bz_writeoff_instance_test1

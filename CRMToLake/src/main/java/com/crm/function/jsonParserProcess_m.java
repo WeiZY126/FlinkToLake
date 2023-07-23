@@ -37,20 +37,20 @@ public class jsonParserProcess_m extends JsonSideOutPutProcess<String> {
             }
 
             if (op.equals("I")) {
-                RowData rowData = getRowDataFromJson(jsonObject.getString("dataload").replaceAll(":null,",""), sinkTableName);
+                RowData rowData = getRowDataFromJson(jsonObject.getString("dataload"), sinkTableName);
                 rowData.setRowKind(RowKind.INSERT);
                 context.output(outputTagMap.get(sinkTableName), rowData);
+//                context.output(outputTagMap.get(sinkTableName + "_test"), rowData);
             } else if (op.equals("U")) {
-                RowData rowData1 = getRowDataFromJson(jsonObject.getString("BEFORE"), sinkTableName);
-                rowData1.setRowKind(RowKind.UPDATE_BEFORE);
                 RowData rowData2 = getRowDataFromJson(jsonObject.getString("dataload"), sinkTableName);
                 rowData2.setRowKind(RowKind.UPDATE_AFTER);
-                context.output(outputTagMap.get(sinkTableName), rowData1);
                 context.output(outputTagMap.get(sinkTableName), rowData2);
+//                context.output(outputTagMap.get(sinkTableName + "_test"), rowData2);
             } else if (op.equals("D")) {
                 RowData rowData = getRowDataFromJson(jsonObject.getString("BEFORE"), sinkTableName);
                 rowData.setRowKind(RowKind.DELETE);
                 context.output(outputTagMap.get(sinkTableName), rowData);
+//                context.output(outputTagMap.get(sinkTableName + "_test"), rowData);
             }
         }
     }
